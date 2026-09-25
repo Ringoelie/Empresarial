@@ -1,0 +1,27 @@
+{
+  "name": "empresarial",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Simulador 3D de empresas: de un garaje a una multinacional. Three.js + WebGPU.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "gen:globe": "node scripts/gen-globe.mjs",
+    "balance": "tsx scripts/balance.ts"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.186.0",
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "world-atlas": "^2.0.2"
+  }
+}
