@@ -1,10 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   // Despliegue en Cloudflare Workers como sitio estático (sin código de servidor).
+  // IMPORTANTE: si creas el Worker desde el panel de Cloudflare, debe llamarse igual que "name".
   "name": "empresarial",
   "compatibility_date": "2026-09-23",
+  // `wrangler deploy` compila siempre antes de subir: así nunca se despliega sin dist/.
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
-    // El plugin de Cloudflare para Vite rellena `directory` con la salida del build.
+    "directory": "./dist",
     "not_found_handling": "single-page-application"
   },
   "observability": {

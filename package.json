@@ -7,17 +7,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "npm run build && vite preview",
+    "preview": "wrangler dev",
     "typecheck": "tsc --noEmit",
     "gen:globe": "node scripts/gen-globe.mjs",
     "balance": "tsx scripts/balance.ts",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "wrangler deploy",
+    "check:deploy": "wrangler deploy --dry-run"
   },
   "dependencies": {
     "three": "^0.186.1"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.60.1",
     "@types/three": "^0.186.0",
     "d3-geo": "^3.1.1",
     "topojson-client": "^3.1.0",

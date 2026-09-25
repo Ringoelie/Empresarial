@@ -1,0 +1,26 @@
+# Comprueba en cada push/PR que el proyecto compila y que el despliegue en Cloudflare
+# funcionaría (wrangler deploy --dry-run). No necesita credenciales ni despliega nada.
+name: Comprobar despliegue en Cloudflare
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - name: wrangler deploy --dry-run (incluye el build)
+        run: npx wrangler deploy --dry-run
+      - name: El build contiene la página y las cabeceras
+        run: |
+          test -f dist/index.html
+          test -f dist/_headers
+          ls dist/assets/*.js

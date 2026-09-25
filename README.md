@@ -8,10 +8,11 @@ y una valoración de 8.000 millones.
 
 ```bash
 npm install
-npm run dev      # servidor de desarrollo (runtime de Cloudflare Workers en local)
+npm run dev      # servidor de desarrollo
 npm run build    # build de producción en dist/
-npm run preview  # build + vista previa local en workerd
-npm run deploy   # build + despliegue en Cloudflare
+npm run preview  # vista previa local con el runtime de Cloudflare (wrangler dev)
+npm run deploy   # compila y despliega en Cloudflare
+npm run check:deploy  # valida el despliegue sin subir nada
 ```
 
 - **Construye** (🏗️ o tecla `B`): fábricas, tiendas, oficinas, almacenes, laboratorios, agencias de marketing,
@@ -54,9 +55,10 @@ Puedes forzar WebGL2 con `?webgl` en la URL.
 
 El juego se publica como sitio estático en **Cloudflare Workers** (static assets):
 
-- `wrangler.jsonc` define el Worker `empresarial` (solo assets, sin código de servidor).
-- `@cloudflare/vite-plugin` genera `dist/wrangler.json` al compilar; `wrangler deploy` lo usa automáticamente.
+- `wrangler.jsonc` define el Worker `empresarial` (solo assets de `dist/`, sin código de servidor) y un
+  `build.command`, así que `wrangler deploy` **siempre compila antes de subir**.
 - `public/_headers` cachea para siempre `/assets/*` (llevan hash) y añade cabeceras de seguridad.
+- El workflow de GitHub *Comprobar despliegue en Cloudflare* valida cada push con `wrangler deploy --dry-run`.
 
 **Desde tu máquina:** `npx wrangler login` una vez y luego `npm run deploy`.
 
@@ -70,6 +72,13 @@ elige este repositorio y usa:
 | Versión de Node | 22 (leída de `.node-version`) |
 
 Cada push a la rama principal se desplegará automáticamente; las demás ramas generan versiones de vista previa.
+
+Errores típicos y cómo evitarlos:
+
+- *Missing entry-point to Worker script or to assets directory*: ya no ocurre, `wrangler deploy` compila solo.
+- *The name in your Wrangler configuration file must match the Worker's name*: el Worker del panel
+  debe llamarse `empresarial` (o cambia `name` en `wrangler.jsonc`).
+- Crear un proyecto de **Pages** en vez de **Workers**: este repositorio es un Worker; impórtalo desde *Workers*.
 
 ### Equilibrio
 
