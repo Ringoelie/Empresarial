@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Despliegue en Cloudflare Workers como sitio estático (sin código de servidor).
+  "name": "empresarial",
+  "compatibility_date": "2026-09-23",
+  "assets": {
+    // El plugin de Cloudflare para Vite rellena `directory` con la salida del build.
+    "not_found_handling": "single-page-application"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

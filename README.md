@@ -8,8 +8,10 @@ y una valoración de 8.000 millones.
 
 ```bash
 npm install
-npm run dev      # servidor de desarrollo
+npm run dev      # servidor de desarrollo (runtime de Cloudflare Workers en local)
 npm run build    # build de producción en dist/
+npm run preview  # build + vista previa local en workerd
+npm run deploy   # build + despliegue en Cloudflare
 ```
 
 - **Construye** (🏗️ o tecla `B`): fábricas, tiendas, oficinas, almacenes, laboratorios, agencias de marketing,
@@ -47,6 +49,27 @@ scripts/     gen-globe.mjs (máscara de continentes) y balance.ts (bot para equi
 - Si el dispositivo WebGPU se pierde, la partida se guarda y el juego se recarga con WebGL2.
 
 Puedes forzar WebGL2 con `?webgl` en la URL.
+
+## Despliegue en Cloudflare
+
+El juego se publica como sitio estático en **Cloudflare Workers** (static assets):
+
+- `wrangler.jsonc` define el Worker `empresarial` (solo assets, sin código de servidor).
+- `@cloudflare/vite-plugin` genera `dist/wrangler.json` al compilar; `wrangler deploy` lo usa automáticamente.
+- `public/_headers` cachea para siempre `/assets/*` (llevan hash) y añade cabeceras de seguridad.
+
+**Desde tu máquina:** `npx wrangler login` una vez y luego `npm run deploy`.
+
+**Desde GitHub (Workers Builds):** en el panel de Cloudflare → *Workers & Pages* → *Create* → *Import a repository*,
+elige este repositorio y usa:
+
+| Ajuste | Valor |
+|---|---|
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Versión de Node | 22 (leída de `.node-version`) |
+
+Cada push a la rama principal se desplegará automáticamente; las demás ramas generan versiones de vista previa.
 
 ### Equilibrio
 
